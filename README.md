@@ -9,9 +9,7 @@
 1주차 : 정재명, 정택현, 조경환, 조기현, 조송주, 조수정, 조인택, 조정래, 김병인, 김석호, 김승언, 김신우  
 2주차 : 이은정, 권지웅, 박재현, 허경영, 현기엽, 김근수, 심영민, 이지원, 조경환, 정택현, 양어진  
 3주차 : 신병기, 조인택, 문성주, 서명렬, 유시형, 정재명, 김석호, 김영렬, 백종근, 임수현, 강민석, 이태경  
-4주차 :   
-
-
+4주차 : 송민관, 양어진, 조수정, 조기현, 김병인, 박태희, 백종근, 이진호, 홍동현, 류연수, 임리나
 
 ## 2주차
 
@@ -131,3 +129,88 @@ flask run -h 0.0.0.0 -p 80
 ### 참여자
 
 신병기 조인택 문성주 서명렬 유시형 정재명 김석호 김영렬 백종근 임수현 강민석 이태경
+
+
+# [릴프] 버디버디
+
+# 👋🏻 4주차 - 예측 모델
+
+---
+
+## 🙈 참여자 및 역할 분담
+
+## [CoreML] 구성원 🙊
+
+S020 박태희 | S021 백종근 | S042 이진호 | S065 홍동현 | S015 류연수 | S044 임리나 
+
+## [User Interface] 구성원 🙊
+
+S026 송민관 | S030 양어진 | S055 조수정 |  S053 조기현 | S008 김병인
+
+---
+
+## 📌 기능 C - 추천 서비스
+
+- 사용자의 관심사를 기준으로, 유사한 관심사를 선정 해준다.
+- 유사한 관심사를 가진 사람과 랜덤으로 채팅이 가능하다.
+
+## [User Interface]
+
+- User id data에 관심사 항목 추가
+- 추천 목록 서비스 페이지 작성
+
+<img src = "https://user-images.githubusercontent.com/21030956/90867222-fcf6f580-e3cf-11ea-879d-545094970bf9.png" width = "400">
+
+<img src = "https://user-images.githubusercontent.com/21030956/90867227-fff1e600-e3cf-11ea-966a-2d6ea4837295.png" width = "400">
+
+## [CoreML]
+
+- Hobby CSV 파일에 간단한 데이터 값을 만들어 학습
+
+    5개의 관심사를 가진 8명의 데이터 값으로 학습을 진행함
+
+    <img width="1512" alt="_2020-08-21__4 13 52" src="https://user-images.githubusercontent.com/21030956/90867444-57905180-e3d0-11ea-8b5a-f565c0a411ea.png">
+<img width="1512" alt="_2020-08-21__4 14 12" src="https://user-images.githubusercontent.com/21030956/90867460-5d863280-e3d0-11ea-9f93-a95dc93c36eb.png">
+    
+Recommendations training
+    
+    <img width="300" alt="_2020-08-21__4 14 12" src="https://user-images.githubusercontent.com/21030956/90867511-742c8980-e3d0-11ea-8906-54ff92a9e26b.png">
+    
+    <img width="300" alt="_2020-08-21__4 14 12" src="https://user-images.githubusercontent.com/21030956/90867516-768ee380-e3d0-11ea-8467-82eabb6f7d95.png">
+    
+    <img width="300" alt="_2020-08-21__4 14 12" src="https://user-images.githubusercontent.com/21030956/90867518-77277a00-e3d0-11ea-848a-9c6064f514f1.png">
+    
+    <img width="300" alt="_2020-08-21__4 14 12" src="https://user-images.githubusercontent.com/21030956/90867520-77c01080-e3d0-11ea-852c-f2b9d0fbd9ad.png">
+
+
+
+
+- 학습을 시킨 HobbyRecommendation ML 모델로 사용자의 관심사 값을 분석하여 추천
+
+![Untitled 5](https://user-images.githubusercontent.com/21030956/90867525-7858a700-e3d0-11ea-8ae2-ac8b2798e7f3.png)
+
+참고 자료 
+
+[https://heartbeat.fritz.ai/build-a-core-ml-recommender-engine-for-ios-using-create-ml-e8a748d01ba3](https://heartbeat.fritz.ai/build-a-core-ml-recommender-engine-for-ios-using-create-ml-e8a748d01ba3)
+
+## [Database]
+
+- Flask를 활용해 signup, favorites를 구현
+- Database는 h2 사용
+
+```python
+@app.route('/signup', methods=['POST'])
+def signup():
+    data = request.get_json()
+    user_id = data.get("userId")
+    favorites = data.get("favorites")
+    userdata[user_id] = favorites
+
+    return jsonify(data)
+
+@app.route('/favorites', methods = ['GET'])
+def favorites():
+    user_id = request.args.get('userId',"test")
+    # print(userdata[user_id])
+    return userdata[user_id]
+```
